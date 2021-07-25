@@ -1,5 +1,12 @@
 use fltk::{
-    app, button::Button, enums::FrameType, frame::Frame, group::Group, prelude::*, window::Window,
+    app,
+    button::Button,
+    draw,
+    enums::{Color, FrameType},
+    frame::Frame,
+    group::Group,
+    prelude::*,
+    window::Window,
 };
 
 fn main() {
@@ -60,9 +67,12 @@ struct MyFrame {
 
 impl MyFrame {
     fn default() -> Self {
-        MyFrame {
-            frame: Frame::default(),
-        }
+        let mut frame = Frame::default();
+        frame.draw(|f| {
+            draw::draw_rect_fill(f.x() + 1, f.y() + 1, f.w() - 2, f.h() - 2, Color::Green)
+        });
+
+        MyFrame { frame }
     }
 
     fn with_pos(mut self, x: i32, y: i32) -> Self {
