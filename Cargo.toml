@@ -2,6 +2,15 @@
 name = "fltk-test"
 version = "0.1.0"
 edition = "2018"
+description = "A binary crate to test fltk-rs"
+repository = "https://github.com/paveloom-a/fltk-rs-playground"
+license-file = "LICENSE.md"
+
+[package.metadata.bundle]
+name = "fltk-test"
+identifier = "io.github.paveloom.fltk-test"
+icon = ["assets/fltk-test.png"]
+resources = ["assets"]
 
 [dependencies]
 fltk = { version = "=1.1.4", features = ["fltk-bundled", "use-ninja"] }

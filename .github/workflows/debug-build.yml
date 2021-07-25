@@ -15,6 +15,7 @@ jobs:
               ( startsWith(matrix.os, 'windows') && 'Windows' ) ||
               ( startsWith(matrix.os, 'mac') && 'macOS' ) }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, macos-10.15, ubuntu-18.04]
 
@@ -37,24 +38,24 @@ jobs:
         cargo build
         cargo build --release
         if ${{ startsWith(matrix.os, 'windows') }}; then
-          mv target/debug/shuchu.exe shuchu-debug.exe
-          mv target/release/shuchu.exe .
+          mv target/debug/fltk-test.exe fltk-test-debug.exe
+          mv target/release/fltk-test.exe .
         else
-          mv target/debug/shuchu shuchu-debug
-          mv target/release/shuchu .
-          strip shuchu shuchu-debug
+          mv target/debug/fltk-test fltk-test-debug
+          mv target/release/fltk-test .
+          strip fltk-test fltk-test-debug
         fi
     - name: Create an AppImage (Linux only)
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: |
-        linuxdeploy --appdir AppDir -e shuchu -d assets/shuchu.desktop -i assets/shuchu-64.png -o appimage
-        mv Shuchu*.AppImage Shuchu.AppImage
+        linuxdeploy --appdir AppDir -d assets/fltk-test.desktop -i assets/fltk-test.png -e fltk-test -o appimage
+        mv fltk-test*.AppImage flt-test.AppImage
     - name: Create an App Bundle (macOS only)
       if: ${{ startsWith(matrix.os, 'mac') }}
       run: |
         cargo install cargo-bundle
         cargo bundle
-        mv target/debug/bundle/osx/Shuchu.app .
+        mv target/debug/bundle/osx/fltk-test.app fltk-test.app
     - name: Upload the binaries
       uses: actions/upload-artifact@v2
       with:
@@ -62,9 +63,9 @@ jobs:
                   ( startsWith(matrix.os, 'windows') && 'Windows' ) ||
                   ( startsWith(matrix.os, 'macOS') && 'macOS' ) }}
         path: |
-          shuchu-debug
-          shuchu-debug.exe
-          shuchu
-          shuchu.exe
-          Shuchu.AppImage
-          Shuchu.app
+          fltk-test-debug
+          fltk-test-debug.exe
+          fltk-test
+          fltk-test.exe
+          fltk-test.AppImage
+          fltk-test.app
