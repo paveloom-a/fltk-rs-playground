@@ -1,0 +1,8 @@
+[package]
+name = "fltk-test"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+fltk = { version = "=1.1.4", features = ["fltk-bundled", "use-ninja"] }
+crossbeam-channel = {version = "~0.5.1"}
