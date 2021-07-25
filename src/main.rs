@@ -4,10 +4,13 @@ use fltk::{
     draw,
     enums::{Color, FrameType},
     frame::Frame,
-    group::Group,
+    group::{Group, Pack},
     prelude::*,
     window::Window,
 };
+
+mod widgets;
+use widgets::list;
 
 fn main() {
     let app = app::App::default();
@@ -27,17 +30,16 @@ fn main() {
 
     bg.end();
 
-    let mut fg = Group::default()
+    let mut lg = Pack::default()
         .with_pos(10, 10 + gh + 10)
         .with_size(w.w() - 20, w.h() - 10 - gh - 10 - 10);
-    fg.set_frame(FrameType::BorderBox);
+    lg.set_frame(FrameType::BorderFrame);
 
-    let mut f = MyFrame::default()
-        .with_pos(10, 10)
-        .with_size(fg.w() - 20, fg.h() - 20);
-    f.set_frame(FrameType::BorderBox);
+    let mut l = list::List::default();
+    l.set_size(0, lg.h());
+    l.add("Hello there!");
 
-    fg.end();
+    lg.end();
 
     w.show();
     app.run().unwrap();
@@ -58,36 +60,5 @@ fn resize(b: &mut Button) {
                 }
             }
         }
-    }
-}
-
-struct MyFrame {
-    frame: Frame,
-}
-
-impl MyFrame {
-    fn default() -> Self {
-        let mut frame = Frame::default();
-        frame.draw(|f| {
-            draw::draw_rect_fill(f.x() + 1, f.y() + 1, f.w() - 2, f.h() - 2, Color::Green)
-        });
-
-        MyFrame { frame }
-    }
-
-    fn with_pos(mut self, x: i32, y: i32) -> Self {
-        if let Some(ref p) = self.frame.parent() {
-            self.frame.set_pos(p.x() + x, p.y() + y);
-        }
-        self
-    }
-
-    fn with_size(mut self, width: i32, height: i32) -> Self {
-        self.frame.set_size(width, height);
-        self
-    }
-
-    fn set_frame(&mut self, typ: FrameType) {
-        self.frame.set_frame(typ);
     }
 }
