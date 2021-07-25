@@ -1,20 +1,14 @@
 use fltk::{
-    app,
-    button::Button,
-    draw,
-    enums::{Color, FrameType},
-    frame::Frame,
-    group::{Group, Pack},
-    prelude::*,
-    window::Window,
+    app, button::Button, enums::FrameType, frame::Frame, group::Group, prelude::*, window::Window,
 };
-
-mod widgets;
-use widgets::list;
 
 fn main() {
     let app = app::App::default();
-    let mut w = Window::new(100, 100, 250, 250, "");
+
+    let ww = 250;
+    let wh = 250;
+    let mut w = Window::new(100, 100, ww, wh, "");
+    w.size_range(ww, wh, ww, wh);
 
     let gh = 40;
     let mut bg = Group::default().with_pos(10, 10).with_size(w.w() - 20, gh);
@@ -30,16 +24,10 @@ fn main() {
 
     bg.end();
 
-    let mut lg = Pack::default()
+    let mut f = Frame::default()
         .with_pos(10, 10 + gh + 10)
         .with_size(w.w() - 20, w.h() - 10 - gh - 10 - 10);
-    lg.set_frame(FrameType::BorderFrame);
-
-    let mut l = list::List::default();
-    l.set_size(0, lg.h());
-    l.add("Hello there!");
-
-    lg.end();
+    f.set_frame(FrameType::BorderBox);
 
     w.show();
     app.run().unwrap();
