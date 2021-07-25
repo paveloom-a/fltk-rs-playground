@@ -1,11 +1,5 @@
 use fltk::{
-    app,
-    button::Button,
-    enums::FrameType,
-    frame::Frame,
-    group::{Group, Scroll},
-    prelude::*,
-    window::Window,
+    app, button::Button, enums::FrameType, frame::Frame, group::Group, prelude::*, window::Window,
 };
 
 fn main() {
@@ -13,27 +7,30 @@ fn main() {
     let mut w = Window::new(100, 100, 250, 250, "");
 
     let gh = 40;
-    let mut g = Group::default().with_pos(10, 10).with_size(w.w() - 20, gh);
-    g.set_frame(FrameType::BorderBox);
+    let mut bg = Group::default().with_pos(10, 10).with_size(w.w() - 20, gh);
+    bg.set_frame(FrameType::BorderBox);
 
     let bw = 60;
     let bh = 30;
     let mut b = Button::default()
-        .with_pos(g.x() + (g.w() - bw) / 2, g.y() + (g.h() - bh) / 2)
+        .with_pos(bg.x() + (bg.w() - bw) / 2, bg.y() + (bg.h() - bh) / 2)
         .with_size(bw, bh)
         .with_label("Hide");
     b.set_callback(resize);
 
-    g.end();
+    bg.end();
 
-    let mut s = Scroll::default()
+    let mut fg = Group::default()
         .with_pos(10, 10 + gh + 10)
         .with_size(w.w() - 20, w.h() - 10 - gh - 10 - 10);
-    s.set_frame(FrameType::BorderBox);
+    fg.set_frame(FrameType::BorderBox);
 
-    // let f = Frame::default().with_size(s.w(), s.h());
+    let mut f = MyFrame::default()
+        .with_pos(10, 10)
+        .with_size(fg.w() - 20, fg.h() - 20);
+    f.set_frame(FrameType::BorderBox);
 
-    s.end();
+    fg.end();
 
     w.show();
     app.run().unwrap();
@@ -54,5 +51,33 @@ fn resize(b: &mut Button) {
                 }
             }
         }
+    }
+}
+
+struct MyFrame {
+    frame: Frame,
+}
+
+impl MyFrame {
+    fn default() -> Self {
+        MyFrame {
+            frame: Frame::default(),
+        }
+    }
+
+    fn with_pos(mut self, x: i32, y: i32) -> Self {
+        if let Some(ref p) = self.frame.parent() {
+            self.frame.set_pos(p.x() + x, p.y() + y);
+        }
+        self
+    }
+
+    fn with_size(mut self, width: i32, height: i32) -> Self {
+        self.frame.set_size(width, height);
+        self
+    }
+
+    fn set_frame(&mut self, typ: FrameType) {
+        self.frame.set_frame(typ);
     }
 }
