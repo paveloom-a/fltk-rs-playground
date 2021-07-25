@@ -48,13 +48,13 @@ jobs:
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: |
         linuxdeploy --appdir AppDir -d assets/fltk-test.desktop -i assets/fltk-test.png -e fltk-test -o appimage
-        mv Fltk-test*.AppImage flt-test.AppImage
+        mv fltk-test*.AppImage flt-test.AppImage
     - name: Create an App Bundle (macOS only)
       if: ${{ startsWith(matrix.os, 'mac') }}
       run: |
         cargo install cargo-bundle
         cargo bundle
-        mv target/debug/bundle/osx/Fltk-test.app fltk-test.app
+        mv target/debug/bundle/osx/fltk-test.app fltk-test.app
     - name: Upload the binaries
       uses: actions/upload-artifact@v2
       with:
