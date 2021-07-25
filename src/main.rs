@@ -1,5 +1,11 @@
 use fltk::{
-    app, button::Button, enums::FrameType, frame::Frame, group::Group, prelude::*, window::Window,
+    app,
+    button::Button,
+    enums::FrameType,
+    frame::Frame,
+    group::{Group, Scroll},
+    prelude::*,
+    window::Window,
 };
 
 fn main() {
@@ -20,10 +26,14 @@ fn main() {
 
     g.end();
 
-    let mut f = Frame::default()
+    let mut s = Scroll::default()
         .with_pos(10, 10 + gh + 10)
         .with_size(w.w() - 20, w.h() - 10 - gh - 10 - 10);
-    f.set_frame(FrameType::BorderBox);
+    s.set_frame(FrameType::BorderBox);
+
+    // let f = Frame::default().with_size(s.w(), s.h());
+
+    s.end();
 
     w.show();
     app.run().unwrap();
@@ -32,15 +42,15 @@ fn main() {
 fn resize(b: &mut Button) {
     if let Some(ref g) = b.parent() {
         if let Some(ref mut w) = g.parent() {
-            if let Some(ref mut f) = w.child(1) {
+            if let Some(ref mut s) = w.child(1) {
                 if w.h() == 250 {
                     w.resize(w.x(), w.y(), w.w(), 10 + g.h() + 10);
                     b.set_label("Show");
-                    f.hide();
+                    s.hide();
                 } else {
                     w.resize(w.x(), w.y(), w.w(), 250);
                     b.set_label("Hide");
-                    f.show();
+                    s.show();
                 }
             }
         }
