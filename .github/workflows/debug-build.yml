@@ -47,7 +47,7 @@ jobs:
     - name: Create an AppImage (Linux only)
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: |
-        linuxdeploy --appdir AppDir -d assets/fltk-test.desktop -e fltk-test -o appimage
+        linuxdeploy --appdir AppDir -d assets/fltk-test.desktop -i assets/fltk-test.png -e fltk-test -o appimage
         mv Fltk-test*.AppImage flt-test.AppImage
     - name: Create an App Bundle (macOS only)
       if: ${{ startsWith(matrix.os, 'mac') }}
