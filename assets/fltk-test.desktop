@@ -3,3 +3,4 @@ Type=Application
 Name=fltk-test
 Exec=fltk-test
 Icon=fltk-test
+Categories=Utility;
