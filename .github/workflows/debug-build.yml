@@ -18,18 +18,22 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, macos-10.15, ubuntu-18.04]
-
     steps:
-    - name: Download dependencies (Linux only)
-      if: ${{ startsWith(matrix.os, 'ubuntu') }}
+    - name: Download dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y libpango1.0-dev libx11-dev libxext-dev \
-                                libxft-dev libxinerama-dev libxcursor-dev \
-                                libxrender-dev libxfixes-dev ninja-build \
-                                appstream
-        sudo wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -O /usr/local/bin/linuxdeploy
-        sudo chmod +x /usr/local/bin/linuxdeploy
+        if ${{ startsWith(matrix.os, 'ubuntu') }}; then
+          sudo apt-get update
+          sudo apt-get install -y libpango1.0-dev libx11-dev libxext-dev \
+                                  libxft-dev libxinerama-dev libxcursor-dev \
+                                  libxrender-dev libxfixes-dev ninja-build \
+                                  appstream
+          sudo wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -O /usr/local/bin/linuxdeploy
+          sudo chmod +x /usr/local/bin/linuxdeploy
+        elif ${{ startsWith(matrix.os, 'windows') }}; then
+          choco install ninja
+        else
+          brew install ninja
+        fi
     - name: Checkout the repository
       uses: actions/checkout@v2
     - name: Build
@@ -49,7 +53,7 @@ jobs:
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: |
         linuxdeploy --appdir AppDir -d assets/fltk-test.desktop -i assets/fltk-test.png -e fltk-test -o appimage
-        mv fltk-test*.AppImage flt-test.AppImage
+        mv fltk-test*.AppImage fltk-test.AppImage
     - name: Create an App Bundle (macOS only)
       if: ${{ startsWith(matrix.os, 'mac') }}
       run: |
