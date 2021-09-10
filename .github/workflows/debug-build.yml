@@ -49,7 +49,7 @@ jobs:
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: |
         linuxdeploy --appdir AppDir -d assets/fltk-test.desktop -i assets/fltk-test.png -e fltk-test -o appimage
-        mv fltk-test*.AppImage flt-test.AppImage
+        mv fltk-test*.AppImage fltk-test.AppImage
     - name: Create an App Bundle (macOS only)
       if: ${{ startsWith(matrix.os, 'mac') }}
       run: |
